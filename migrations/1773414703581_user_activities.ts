@@ -1,18 +1,25 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { USER_ACTIVITIES_TABLE as TABLE } from '../tables';
+import {
+  USER_ACTIVITIES_TABLE as TABLE,
+  USERS_TABLE,
+} from '../definitions/tables';
 
 export const shorthands = undefined;
 
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createSchema(TABLE.schema, { ifNotExists: true });
-
   pgm.createTable(
     TABLE,
     {
-      id: { type: 'uuid', primaryKey: true },
-
-      actor_id: {
+      id: {
         type: 'uuid',
+        primaryKey: true,
+        default: pgm.func('uuid_generate_v4()'),
+      },
+
+      user_id: {
+        type: 'uuid',
+        references: USERS_TABLE,
+        onDelete: 'CASCADE',
         notNull: false,
       },
 
@@ -36,15 +43,8 @@ export const up = (pgm: MigrationBuilder) => {
   );
 
   pgm.createIndex(TABLE, ['resource_type', 'resource_id']);
-
-  pgm.createIndex(TABLE, 'actor_id');
 };
 
 export const down = (pgm: MigrationBuilder) => {
-  pgm.dropIndex(TABLE, 'actor_id');
-
-  pgm.dropIndex(TABLE, ['resource_type', 'resource_id']);
-
   pgm.dropTable(TABLE);
-  pgm.dropSchema(TABLE.schema, { ifExists: true, cascade: true });
 };

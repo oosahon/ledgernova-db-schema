@@ -1,13 +1,15 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { USERS_TABLE as TABLE } from '../tables';
+import { USERS_TABLE as TABLE } from '../definitions/tables';
 
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createSchema(TABLE.schema, { ifNotExists: true });
-
   pgm.createTable(
     TABLE,
     {
-      id: { type: 'uuid', primaryKey: true },
+      id: {
+        type: 'uuid',
+        primaryKey: true,
+        default: pgm.func('uuid_generate_v4()'),
+      },
 
       first_name: { type: 'varchar(200)', notNull: true },
 
@@ -19,7 +21,11 @@ export const up = (pgm: MigrationBuilder) => {
 
       password: { type: 'varchar(200)' },
 
-      created_at: { type: 'timestamptz', notNull: true },
+      created_at: {
+        type: 'timestamptz',
+        default: pgm.func('now()'),
+        notNull: true,
+      },
 
       updated_at: {
         type: 'timestamptz',
@@ -37,5 +43,4 @@ export const up = (pgm: MigrationBuilder) => {
 
 export const down = (pgm: MigrationBuilder) => {
   pgm.dropTable(TABLE);
-  pgm.dropSchema(TABLE.schema, { ifExists: true, cascade: true });
 };
