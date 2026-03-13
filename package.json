@@ -1,0 +1,21 @@
+{
+  "name": "migrations",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format:all": "prettier --write \"src/**/*.{ts,js,json,md}\"",
+    "format:changed": "prettier --write --cache .",
+    "migrate": "node-pg-migrate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "dotenv": "^17.3.1",
+    "node-pg-migrate": "^8.0.4",
+    "pg": "^8.20.0",
+    "prettier": "^3.8.1"
+  }
+}
