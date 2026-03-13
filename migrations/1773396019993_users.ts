@@ -1,8 +1,11 @@
-export const up = (pgm) => {
-  pgm.createSchema('core', { ifNotExists: true });
+import { MigrationBuilder } from 'node-pg-migrate';
+import { USERS_TABLE as TABLE } from '../tables';
+
+export const up = (pgm: MigrationBuilder) => {
+  pgm.createSchema(TABLE.schema, { ifNotExists: true });
 
   pgm.createTable(
-    { schema: 'core', name: 'users' },
+    TABLE,
     {
       id: { type: 'uuid', primaryKey: true },
 
@@ -32,6 +35,7 @@ export const up = (pgm) => {
   );
 };
 
-export const down = (pgm) => {
-  pgm.dropTable({ schema: 'core', name: 'users' }, { ifExists: true });
+export const down = (pgm: MigrationBuilder) => {
+  pgm.dropTable(TABLE);
+  pgm.dropSchema(TABLE.schema, { ifExists: true, cascade: true });
 };

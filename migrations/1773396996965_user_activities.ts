@@ -1,10 +1,13 @@
+import { MigrationBuilder } from 'node-pg-migrate';
+import { USER_ACTIVITIES_TABLE as TABLE } from '../tables';
+
 export const shorthands = undefined;
 
-export const up = (pgm) => {
-  pgm.createSchema('audit', { ifNotExists: true });
+export const up = (pgm: MigrationBuilder) => {
+  pgm.createSchema(TABLE.schema, { ifNotExists: true });
 
   pgm.createTable(
-    { schema: 'audit', name: 'user_activities' },
+    TABLE,
     {
       id: { type: 'uuid', primaryKey: true },
 
@@ -32,18 +35,16 @@ export const up = (pgm) => {
     }
   );
 
-  pgm.createIndex({ schema: 'audit', name: 'user_activities' }, [
-    'resource_type',
-    'resource_id',
-  ]);
+  pgm.createIndex(TABLE, ['resource_type', 'resource_id']);
 
-  pgm.createIndex({ schema: 'audit', name: 'user_activities' }, ['actor_id']);
+  pgm.createIndex(TABLE, 'actor_id');
 };
 
-export const down = (pgm) => {
-  pgm.dropTable(
-    { schema: 'audit', name: 'user_activities' },
-    { ifExists: true }
-  );
-  pgm.dropSchema('audit', { ifExists: true, cascade: true });
+export const down = (pgm: MigrationBuilder) => {
+  pgm.dropIndex(TABLE, 'actor_id');
+
+  pgm.dropIndex(TABLE, ['resource_type', 'resource_id']);
+
+  pgm.dropTable(TABLE);
+  pgm.dropSchema(TABLE.schema, { ifExists: true, cascade: true });
 };
