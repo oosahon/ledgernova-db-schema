@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "format:all": "prettier --write \"**/*.{ts,js,json,md}\"",
     "format:changed": "prettier --write --cache .",
-    "migrate": "tsx ./node_modules/.bin/node-pg-migrate -j ts"
+    "migrate": "tsx ./node_modules/.bin/node-pg-migrate -j ts",
+    "db:seed:generate": "node bin/generate-seed-file.js",
+    "db:seed": "ts-node bin/run-seed.ts"
   },
   "keywords": [],
   "author": "",
