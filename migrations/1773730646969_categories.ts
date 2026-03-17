@@ -1,18 +1,18 @@
 import { MigrationBuilder } from 'node-pg-migrate';
 import { USERS_TABLE, CATEGORIES_TABLE as TABLE } from '../definitions/tables';
-import { CATEGORY_TYPE, CATEGORY_STATUS } from '../definitions/types';
+import {
+  LEDGER_ACCOUNT_TYPE,
+  CATEGORY_STATUS,
+  CATEGORY_FLOW_TYPE,
+} from '../definitions/types';
 
-const CATEGORY_TYPE_NAME = `"${CATEGORY_TYPE.schema}"."${CATEGORY_TYPE.name}"`;
+const LEDGER_ACCOUNT_TYPE_NAME = `"${LEDGER_ACCOUNT_TYPE.schema}"."${LEDGER_ACCOUNT_TYPE.name}"`;
 const CATEGORY_STATUS_NAME = `"${CATEGORY_STATUS.schema}"."${CATEGORY_STATUS.name}"`;
+const CATEGORY_FLOW_TYPE_NAME = `"${CATEGORY_FLOW_TYPE.schema}"."${CATEGORY_FLOW_TYPE.name}"`;
 
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createType(CATEGORY_TYPE, [
-    'income',
-    'expense',
-    'liability_income',
-    'liability_expense',
-  ]);
   pgm.createType(CATEGORY_STATUS, ['active', 'archived']);
+  pgm.createType(CATEGORY_FLOW_TYPE, ['in', 'out']);
 
   pgm.createTable(
     TABLE,
@@ -31,7 +31,9 @@ export const up = (pgm: MigrationBuilder) => {
 
       tax_key: { type: 'varchar(250)', notNull: true },
 
-      type: { type: CATEGORY_TYPE_NAME, notNull: true },
+      ledger_account_type: { type: LEDGER_ACCOUNT_TYPE_NAME, notNull: true },
+
+      flow_type: { type: CATEGORY_FLOW_TYPE_NAME, notNull: true },
 
       name: { type: 'varchar(100)', notNull: true },
 
@@ -82,5 +84,5 @@ export const down = (pgm: MigrationBuilder) => {
   pgm.dropTable(TABLE);
 
   pgm.dropType(CATEGORY_STATUS);
-  pgm.dropType(CATEGORY_TYPE);
+  pgm.dropType(CATEGORY_FLOW_TYPE);
 };
