@@ -1,19 +1,12 @@
 import { MigrationBuilder } from 'node-pg-migrate';
 import { USERS_TABLE, CATEGORIES_TABLE as TABLE } from '../definitions/tables';
 import {
-  LEDGER_ACCOUNT_TYPE,
-  CATEGORY_STATUS,
-  CATEGORY_FLOW_TYPE,
+  CATEGORY_STATUS_NAME,
+  ACCOUNTING_DOMAIN_NAME,
+  TRANSACTION_TYPE_NAME,
 } from '../definitions/types';
 
-const LEDGER_ACCOUNT_TYPE_NAME = `"${LEDGER_ACCOUNT_TYPE.schema}"."${LEDGER_ACCOUNT_TYPE.name}"`;
-const CATEGORY_STATUS_NAME = `"${CATEGORY_STATUS.schema}"."${CATEGORY_STATUS.name}"`;
-const CATEGORY_FLOW_TYPE_NAME = `"${CATEGORY_FLOW_TYPE.schema}"."${CATEGORY_FLOW_TYPE.name}"`;
-
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createType(CATEGORY_STATUS, ['active', 'archived']);
-  pgm.createType(CATEGORY_FLOW_TYPE, ['in', 'out']);
-
   pgm.createTable(
     TABLE,
     {
@@ -23,21 +16,13 @@ export const up = (pgm: MigrationBuilder) => {
         default: pgm.func('uuid_generate_v4()'),
       },
 
-      user_id: {
-        type: 'uuid',
-        references: USERS_TABLE,
-        onDelete: 'CASCADE',
-      },
-
-      tax_key: { type: 'varchar(250)', notNull: true },
-
-      ledger_account_type: { type: LEDGER_ACCOUNT_TYPE_NAME, notNull: true },
-
-      flow_type: { type: CATEGORY_FLOW_TYPE_NAME, notNull: true },
-
       name: { type: 'varchar(100)', notNull: true },
 
-      description: { type: 'varchar(200)', notNull: true },
+      accounting_domain: { type: ACCOUNTING_DOMAIN_NAME, notNull: true },
+
+      transaction_type: { type: TRANSACTION_TYPE_NAME, notNull: true },
+
+      tax_key: { type: 'varchar(250)', notNull: true },
 
       status: {
         type: CATEGORY_STATUS_NAME,
@@ -45,10 +30,18 @@ export const up = (pgm: MigrationBuilder) => {
         default: 'active',
       },
 
+      description: { type: 'varchar(200)', notNull: true },
+
       parent_id: {
         type: 'uuid',
         references: TABLE,
         onDelete: 'RESTRICT',
+      },
+
+      created_by: {
+        type: 'uuid',
+        references: USERS_TABLE,
+        onDelete: 'SET NULL',
       },
 
       created_at: {
@@ -69,12 +62,12 @@ export const up = (pgm: MigrationBuilder) => {
     }
   );
 
-  pgm.createIndex(TABLE, 'user_id');
+  pgm.createIndex(TABLE, 'created_by');
 
   pgm.sql(`
     ALTER TABLE "${TABLE.schema}"."${TABLE.name}" 
-    ADD CONSTRAINT "unique_user_tax_name" 
-    UNIQUE NULLS NOT DISTINCT (user_id, tax_key, name);
+    ADD CONSTRAINT "unique_creator_tax_name" 
+    UNIQUE NULLS NOT DISTINCT (created_by, tax_key, name);
   `);
 
   pgm.createIndex(TABLE, 'parent_id');
@@ -82,7 +75,4 @@ export const up = (pgm: MigrationBuilder) => {
 
 export const down = (pgm: MigrationBuilder) => {
   pgm.dropTable(TABLE);
-
-  pgm.dropType(CATEGORY_STATUS);
-  pgm.dropType(CATEGORY_FLOW_TYPE);
 };

@@ -1,9 +1,10 @@
 import { MigrationBuilder } from 'node-pg-migrate';
+import { CATEGORY_STATUS } from '../definitions/types';
 
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createSchema('audit', { ifNotExists: true });
+  pgm.createType(CATEGORY_STATUS, ['active', 'archived']);
 };
 
 export const down = (pgm: MigrationBuilder) => {
-  pgm.dropSchema('audit', { ifExists: true, cascade: true });
+  pgm.dropType(CATEGORY_STATUS);
 };

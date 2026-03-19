@@ -1,10 +1,9 @@
 import { MigrationBuilder } from 'node-pg-migrate';
 import {
-  USER_ACTIVITIES_TABLE as TABLE,
+  USER_LEDGER_ACCOUNTS_TABLE as TABLE,
   USERS_TABLE,
+  LEDGER_ACCOUNTS_TABLE,
 } from '../definitions/tables';
-
-export const shorthands = undefined;
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(
@@ -20,29 +19,41 @@ export const up = (pgm: MigrationBuilder) => {
         type: 'uuid',
         references: USERS_TABLE,
         onDelete: 'CASCADE',
-        notNull: false,
+        notNull: true,
       },
 
-      action: { type: 'varchar(50)', notNull: true },
-
-      resource_type: { type: 'varchar(50)', notNull: true },
-
-      resource_id: { type: 'uuid', notNull: true },
-
-      metadata: { type: 'jsonb' },
+      ledger_account_id: {
+        type: 'uuid',
+        references: LEDGER_ACCOUNTS_TABLE,
+        onDelete: 'CASCADE',
+        notNull: true,
+      },
 
       created_at: {
         type: 'timestamptz',
         notNull: true,
         default: pgm.func('now()'),
       },
+
+      updated_at: {
+        type: 'timestamptz',
+        notNull: true,
+        default: pgm.func('now()'),
+      },
+
+      deleted_at: { type: 'timestamptz' },
     },
     {
       ifNotExists: true,
     }
   );
 
-  pgm.createIndex(TABLE, ['resource_type', 'resource_id']);
+  pgm.createIndex(TABLE, 'user_id');
+  pgm.createIndex(TABLE, 'ledger_account_id');
+
+  pgm.addConstraint(TABLE, 'unique_user_ledger_account', {
+    unique: ['user_id', 'ledger_account_id'],
+  });
 };
 
 export const down = (pgm: MigrationBuilder) => {
