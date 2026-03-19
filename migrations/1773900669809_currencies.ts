@@ -20,6 +20,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       created_at: {
         type: 'timestamptz',
         notNull: true,
+        default: pgm.func('now()'),
       },
 
       updated_at: {
