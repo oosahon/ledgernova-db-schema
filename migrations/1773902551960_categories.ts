@@ -3,7 +3,7 @@ import { USERS_TABLE, CATEGORIES_TABLE as TABLE } from '../definitions/tables';
 import {
   CATEGORY_STATUS_NAME,
   ACCOUNTING_DOMAIN_NAME,
-  TRANSACTION_TYPE_NAME,
+  CATEGORY_TYPE_NAME,
 } from '../definitions/types';
 
 export const up = (pgm: MigrationBuilder) => {
@@ -20,7 +20,7 @@ export const up = (pgm: MigrationBuilder) => {
 
       accounting_domain: { type: ACCOUNTING_DOMAIN_NAME, notNull: true },
 
-      transaction_type: { type: TRANSACTION_TYPE_NAME, notNull: true },
+      type: { type: CATEGORY_TYPE_NAME, notNull: true },
 
       tax_key: { type: 'varchar(250)', notNull: true },
 

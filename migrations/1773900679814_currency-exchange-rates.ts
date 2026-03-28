@@ -4,22 +4,18 @@ import { MigrationBuilder } from 'node-pg-migrate';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(TABLE, {
-    id: {
-      type: 'uuid',
-      primaryKey: true,
-      default: pgm.func('uuid_generate_v4()'),
-    },
-
     base_currency_code: {
       type: 'char(3)',
       references: CURRENCIES_TABLE,
       notNull: true,
+      primaryKey: true,
     },
 
     target_currency_code: {
       type: 'char(3)',
       references: CURRENCIES_TABLE,
       notNull: true,
+      primaryKey: true,
     },
 
     rate: {
@@ -37,6 +33,10 @@ export const up = (pgm: MigrationBuilder) => {
       type: 'timestamptz',
       notNull: true,
       default: pgm.func('now()'),
+    },
+
+    deleted_at: {
+      type: 'timestamptz',
     },
   });
 };

@@ -1,8 +1,9 @@
 {
-  "name": "migrations",
+  "name": "ledgernova_postgres",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "bash bin/start-postgres.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format:all": "prettier --write \"**/*.{ts,js,json,md}\"",
     "format:changed": "prettier --write --cache .",

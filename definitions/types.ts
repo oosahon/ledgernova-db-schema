@@ -9,6 +9,15 @@ export const LEDGER_ACCOUNT_TYPE = {
 export const LEDGER_ACCOUNT_TYPE_NAME = `${LEDGER_ACCOUNT_TYPE.schema}.${LEDGER_ACCOUNT_TYPE.name}`;
 
 /**
+ * accounting domain
+ */
+export const ACCOUNTING_DOMAIN = {
+  schema: 'core',
+  name: 'accounting_domain',
+};
+export const ACCOUNTING_DOMAIN_NAME = `${ACCOUNTING_DOMAIN.schema}.${ACCOUNTING_DOMAIN.name}`;
+
+/**
  * ledger account status
  */
 export const LEDGER_ACCOUNT_STATUS = {
@@ -36,15 +45,6 @@ export const TRANSACTION_STATUS = {
 export const TRANSACTION_STATUS_NAME = `${TRANSACTION_STATUS.schema}.${TRANSACTION_STATUS.name}`;
 
 /**
- * accounting domain
- */
-export const ACCOUNTING_DOMAIN = {
-  schema: 'core',
-  name: 'accounting_domain',
-};
-export const ACCOUNTING_DOMAIN_NAME = `${ACCOUNTING_DOMAIN.schema}.${ACCOUNTING_DOMAIN.name}`;
-
-/**
  * category status
  */
 export const CATEGORY_STATUS = {
@@ -52,3 +52,12 @@ export const CATEGORY_STATUS = {
   name: 'category_status',
 };
 export const CATEGORY_STATUS_NAME = `${CATEGORY_STATUS.schema}.${CATEGORY_STATUS.name}`;
+
+/**
+ * category type
+ */
+export const CATEGORY_TYPE = {
+  schema: 'core',
+  name: 'category_type',
+};
+export const CATEGORY_TYPE_NAME = `${CATEGORY_TYPE.schema}.${CATEGORY_TYPE.name}`;

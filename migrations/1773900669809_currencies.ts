@@ -28,6 +28,10 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
         notNull: true,
         default: pgm.func('now()'),
       },
+
+      deleted_at: {
+        type: 'timestamptz',
+      },
     },
     {
       ifNotExists: true,
