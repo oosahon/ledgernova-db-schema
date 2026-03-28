@@ -3,9 +3,9 @@ import { ACCOUNTING_DOMAIN } from '../definitions/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createType(ACCOUNTING_DOMAIN, [
-    'organization',
-    'sole_trader',
     'individual',
+    'sole_trader',
+    'organization',
   ]);
 };
 

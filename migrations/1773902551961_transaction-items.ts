@@ -1,14 +1,10 @@
 import { MigrationBuilder } from 'node-pg-migrate';
 import {
-  LEDGER_ACCOUNTS_TABLE,
-  TRANSACTIONS_TABLE as TABLE,
-  USERS_TABLE,
+  TRANSACTION_ITEMS_TABLE as TABLE,
+  TRANSACTIONS_TABLE,
+  CATEGORIES_TABLE,
   CURRENCIES_TABLE,
 } from '../definitions/tables';
-import {
-  TRANSACTION_TYPE_NAME,
-  TRANSACTION_STATUS_NAME,
-} from '../definitions/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(
@@ -20,32 +16,20 @@ export const up = (pgm: MigrationBuilder) => {
         default: pgm.func('uuid_generate_v4()'),
       },
 
-      reference: {
-        type: 'varchar(100)',
-        notNull: true,
-        unique: true,
-      },
+      name: { type: 'varchar(200)', notNull: true },
 
-      type: {
-        type: TRANSACTION_TYPE_NAME,
-        notNull: true,
-      },
-
-      status: {
-        type: TRANSACTION_STATUS_NAME,
-        notNull: true,
-      },
-
-      created_by: {
+      transaction_id: {
         type: 'uuid',
-        references: USERS_TABLE,
+        references: TRANSACTIONS_TABLE,
         onDelete: 'CASCADE',
+        notNull: true,
       },
 
-      ledger_account_id: {
+      category_id: {
         type: 'uuid',
-        references: LEDGER_ACCOUNTS_TABLE,
-        onDelete: 'CASCADE',
+        references: CATEGORIES_TABLE,
+        onDelete: 'RESTRICT',
+        notNull: true,
       },
 
       amount: { type: 'bigint', notNull: true },
@@ -58,26 +42,15 @@ export const up = (pgm: MigrationBuilder) => {
 
       functional_currency_amount: { type: 'bigint', notNull: true },
 
-      date: { type: 'date', notNull: true },
+      quantity: { type: 'numeric(20, 10)', notNull: true },
 
-      recipient_account_id: {
-        type: 'uuid',
-        references: LEDGER_ACCOUNTS_TABLE,
-        onDelete: 'CASCADE',
-      },
+      unit_price: { type: 'bigint' },
 
-      exchange_rate: {
-        type: 'numeric(20, 10)',
+      is_system_generated: {
+        type: 'boolean',
         notNull: true,
+        default: false,
       },
-
-      attachment_ids: {
-        type: 'uuid[]',
-        notNull: true,
-        default: '{}',
-      },
-
-      notes: { type: 'text' },
 
       created_at: {
         type: 'timestamptz',
@@ -97,6 +70,9 @@ export const up = (pgm: MigrationBuilder) => {
       ifNotExists: true,
     }
   );
+
+  pgm.createIndex(TABLE, 'transaction_id');
+  pgm.createIndex(TABLE, 'category_id');
 };
 
 export const down = (pgm: MigrationBuilder) => {
