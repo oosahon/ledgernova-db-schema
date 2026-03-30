@@ -5,7 +5,7 @@ import {
   categoryType,
 } from '../config/categories';
 import toSchemaString from '../utils/to-schema-string';
-import { accountingDomainType } from '../config/accounting';
+import { accountingEntityType } from '../config/accounting';
 import { usersTable } from '../config/users';
 
 export const up = (pgm: MigrationBuilder) => {
@@ -31,8 +31,8 @@ export const up = (pgm: MigrationBuilder) => {
 
       name: { type: 'varchar(100)', notNull: true },
 
-      accounting_domain: {
-        type: toSchemaString(accountingDomainType),
+      accounting_entity_type: {
+        type: toSchemaString(accountingEntityType),
         notNull: true,
       },
 
@@ -90,6 +90,7 @@ export const up = (pgm: MigrationBuilder) => {
 };
 
 export const down = (pgm: MigrationBuilder) => {
+  pgm.dropTable(categoriesTable);
   pgm.dropType(categoryStatus);
   pgm.dropType(categoryType);
 };

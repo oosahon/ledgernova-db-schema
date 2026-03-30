@@ -1,10 +1,15 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { individualAccountsTable } from '../config/accounting';
+import {
+  accountingEntitiesTable,
+  accountingEntityType,
+} from '../config/accounting';
 import { usersTable } from '../config/users';
+import { currenciesTable } from '../config/currencies';
+import toSchemaString from '../utils/to-schema-string';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(
-    individualAccountsTable,
+    accountingEntitiesTable,
     {
       id: {
         type: 'uuid',
@@ -12,7 +17,18 @@ export const up = (pgm: MigrationBuilder) => {
         default: pgm.func('uuid_generate_v4()'),
       },
 
-      user_id: { type: 'uuid', references: usersTable, notNull: true },
+      type: {
+        type: toSchemaString(accountingEntityType),
+        notNull: true,
+      },
+
+      owner_id: { type: 'uuid', references: usersTable, notNull: true },
+
+      functional_currency_code: {
+        type: 'varchar(3)',
+        references: currenciesTable,
+        notNull: true,
+      },
 
       created_at: {
         type: 'timestamptz',
@@ -35,5 +51,5 @@ export const up = (pgm: MigrationBuilder) => {
 };
 
 export const down = (pgm: MigrationBuilder) => {
-  pgm.dropTable(individualAccountsTable);
+  pgm.dropTable(accountingEntitiesTable);
 };

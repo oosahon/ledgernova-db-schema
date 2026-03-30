@@ -1,11 +1,11 @@
 import { coreSchema } from './schemas';
 
-export const accountingDomainType = {
-  name: 'accounting_domain',
+export const accountingEntityType = {
+  name: 'accounting_entity_type',
   schema: coreSchema,
 };
 
-export const individualAccountsTable = {
-  name: 'individual_accounts',
+export const accountingEntitiesTable = {
+  name: 'accounting_entities',
   schema: coreSchema,
 };
