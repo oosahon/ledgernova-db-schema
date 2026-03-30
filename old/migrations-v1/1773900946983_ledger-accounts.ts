@@ -1,10 +1,13 @@
 import { MigrationBuilder } from 'node-pg-migrate';
 import {
-  TRANSACTION_ITEMS_TABLE as TABLE,
-  TRANSACTIONS_TABLE,
-  CATEGORIES_TABLE,
+  LEDGER_ACCOUNTS_TABLE as TABLE,
   CURRENCIES_TABLE,
-} from '../definitions/tables';
+  USERS_TABLE,
+} from '../definitions-v1/tables';
+import {
+  LEDGER_ACCOUNT_TYPE_NAME,
+  LEDGER_ACCOUNT_STATUS_NAME,
+} from '../definitions-v1/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(
@@ -16,23 +19,22 @@ export const up = (pgm: MigrationBuilder) => {
         default: pgm.func('uuid_generate_v4()'),
       },
 
-      name: { type: 'varchar(200)', notNull: true },
-
-      transaction_id: {
-        type: 'uuid',
-        references: TRANSACTIONS_TABLE,
-        onDelete: 'CASCADE',
+      ledger_code: {
+        type: 'varchar(50)',
         notNull: true,
       },
 
-      category_id: {
-        type: 'uuid',
-        references: CATEGORIES_TABLE,
-        onDelete: 'RESTRICT',
+      ledger_type: {
+        type: LEDGER_ACCOUNT_TYPE_NAME,
         notNull: true,
       },
 
-      amount: { type: 'bigint', notNull: true },
+      ledger_account_type: {
+        type: 'varchar(100)',
+        notNull: true,
+      },
+
+      name: { type: 'varchar(100)', notNull: true },
 
       currency_code: {
         type: 'varchar(3)',
@@ -40,16 +42,26 @@ export const up = (pgm: MigrationBuilder) => {
         notNull: true,
       },
 
-      functional_currency_amount: { type: 'bigint', notNull: true },
-
-      quantity: { type: 'numeric(20, 10)', notNull: true },
-
-      unit_price: { type: 'bigint' },
-
-      is_system_generated: {
-        type: 'boolean',
+      status: {
+        type: LEDGER_ACCOUNT_STATUS_NAME,
         notNull: true,
-        default: false,
+        default: 'active',
+      },
+
+      parent_id: {
+        type: 'uuid',
+        references: TABLE,
+        onDelete: 'CASCADE',
+      },
+
+      sub_type: {
+        type: 'varchar(100)',
+      },
+
+      created_by: {
+        type: 'uuid',
+        references: USERS_TABLE,
+        onDelete: 'SET NULL',
       },
 
       created_at: {
@@ -71,8 +83,7 @@ export const up = (pgm: MigrationBuilder) => {
     }
   );
 
-  pgm.createIndex(TABLE, 'transaction_id');
-  pgm.createIndex(TABLE, 'category_id');
+  pgm.createIndex(TABLE, 'parent_id');
 };
 
 export const down = (pgm: MigrationBuilder) => {

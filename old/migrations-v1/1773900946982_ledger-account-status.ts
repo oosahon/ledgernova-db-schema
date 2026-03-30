@@ -1,11 +1,8 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { LEDGER_ACCOUNT_STATUS } from '../definitions/types';
+import { LEDGER_ACCOUNT_STATUS } from '../definitions-v1/types';
 
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createType(LEDGER_ACCOUNT_STATUS, [
-    'active',
-    'archived',
-  ]);
+  pgm.createType(LEDGER_ACCOUNT_STATUS, ['active', 'archived']);
 };
 
 export const down = (pgm: MigrationBuilder) => {

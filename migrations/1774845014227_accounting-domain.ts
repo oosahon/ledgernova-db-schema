@@ -1,8 +1,8 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { ACCOUNTING_DOMAIN } from '../definitions/types';
+import { accountingDomainTypeSchema } from '../definitions/accounting';
 
 export const up = (pgm: MigrationBuilder) => {
-  pgm.createType(ACCOUNTING_DOMAIN, [
+  pgm.createType(accountingDomainTypeSchema, [
     'individual',
     'sole_trader',
     'organization',
@@ -10,5 +10,5 @@ export const up = (pgm: MigrationBuilder) => {
 };
 
 export const down = (pgm: MigrationBuilder) => {
-  pgm.dropType(ACCOUNTING_DOMAIN);
+  pgm.dropType(accountingDomainTypeSchema);
 };

@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { CURRENCIES_TABLE as TABLE } from '../definitions/tables';
+import { CURRENCIES_TABLE as TABLE } from '../definitions-v1/tables';
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createTable(

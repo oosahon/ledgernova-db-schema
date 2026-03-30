@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { LEDGER_ACCOUNT_TYPE } from '../definitions/types';
+import { LEDGER_ACCOUNT_TYPE } from '../definitions-v1/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createType(LEDGER_ACCOUNT_TYPE, [

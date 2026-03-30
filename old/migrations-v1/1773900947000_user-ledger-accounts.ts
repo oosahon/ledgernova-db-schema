@@ -3,7 +3,7 @@ import {
   USER_LEDGER_ACCOUNTS_TABLE as TABLE,
   USERS_TABLE,
   LEDGER_ACCOUNTS_TABLE,
-} from '../definitions/tables';
+} from '../definitions-v1/tables';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(

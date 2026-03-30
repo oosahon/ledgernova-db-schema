@@ -1,5 +1,5 @@
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate';
-import { TRANSACTION_STATUS } from '../definitions/types';
+import { TRANSACTION_STATUS } from '../definitions-v1/types';
 
 export const shorthands: ColumnDefinitions | undefined = undefined;
 

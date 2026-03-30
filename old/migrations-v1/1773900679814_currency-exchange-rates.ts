@@ -1,5 +1,5 @@
-import { CURRENCY_EXCHANGE_RATES_TABLE as TABLE } from '../definitions/tables';
-import { CURRENCIES_TABLE } from '../definitions/tables';
+import { CURRENCY_EXCHANGE_RATES_TABLE as TABLE } from '../definitions-v1/tables';
+import { CURRENCIES_TABLE } from '../definitions-v1/tables';
 import { MigrationBuilder } from 'node-pg-migrate';
 
 export const up = (pgm: MigrationBuilder) => {
