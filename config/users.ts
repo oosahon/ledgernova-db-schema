@@ -1,4 +1,4 @@
-import { auditSchema, coreSchema } from './schemas';
+import { auditSchema, coreSchema } from '../config/schemas';
 
 export const usersTable = {
   schema: coreSchema,

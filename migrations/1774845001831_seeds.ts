@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { seedsTable } from '../definitions/seeds';
+import { seedsTable } from '../config/seeds';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(

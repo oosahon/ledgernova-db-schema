@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { usersTable } from '../definitions/users';
+import { usersTable } from '../config/users';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(

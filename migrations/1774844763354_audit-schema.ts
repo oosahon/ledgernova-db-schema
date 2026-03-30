@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { auditSchema } from '../definitions/schemas';
+import { auditSchema } from '../config/schemas';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createSchema(auditSchema, { ifNotExists: true });

@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { userActivitiesTable, usersTable } from '../definitions/users';
+import { userActivitiesTable, usersTable } from '../config/users';
 
 export const shorthands = undefined;
 

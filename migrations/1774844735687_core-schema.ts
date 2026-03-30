@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { coreSchema } from '../definitions/schemas';
+import { coreSchema } from '../config/schemas';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createExtension('uuid-ossp', { ifNotExists: true });

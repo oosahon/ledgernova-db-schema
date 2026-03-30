@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { auditSchema, coreSchema, reportingSchema } from '../definitions/schemas';
+import { auditSchema, coreSchema, reportingSchema } from '../config/schemas';
 import { DATABASE_USER_ADMIN, DATABASE_USER_CORE } from '../config/vars';
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
