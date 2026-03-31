@@ -57,7 +57,7 @@ export const up = (pgm: MigrationBuilder) => {
       created_by: {
         type: 'uuid',
         references: usersTable,
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
       },
 
       created_at: {

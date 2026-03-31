@@ -22,11 +22,17 @@ export const up = (pgm: MigrationBuilder) => {
         notNull: true,
       },
 
-      owner_id: { type: 'uuid', references: usersTable, notNull: true },
+      owner_id: {
+        type: 'uuid',
+        references: usersTable,
+        notNull: true,
+        onDelete: 'CASCADE',
+      },
 
       functional_currency_code: {
         type: 'varchar(3)',
         references: currenciesTable,
+        onDelete: 'RESTRICT',
         notNull: true,
       },
 

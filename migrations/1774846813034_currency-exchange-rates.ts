@@ -11,6 +11,7 @@ export const up = (pgm: MigrationBuilder) => {
       references: currenciesTable,
       notNull: true,
       primaryKey: true,
+      onDelete: 'CASCADE',
     },
 
     target_currency_code: {
@@ -18,6 +19,7 @@ export const up = (pgm: MigrationBuilder) => {
       references: currenciesTable,
       notNull: true,
       primaryKey: true,
+      onDelete: 'CASCADE',
     },
 
     rate: {
