@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { TRANSACTION_TYPE } from '../definitions/types';
+import { TRANSACTION_TYPE } from '../definitions-v1/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createType(TRANSACTION_TYPE, [

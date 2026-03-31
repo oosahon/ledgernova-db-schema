@@ -1,14 +1,11 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import {
-  USER_ACTIVITIES_TABLE as TABLE,
-  USERS_TABLE,
-} from '../definitions/tables';
+import { userActivitiesTable, usersTable } from '../config/users';
 
 export const shorthands = undefined;
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(
-    TABLE,
+    userActivitiesTable,
     {
       id: {
         type: 'uuid',
@@ -18,7 +15,7 @@ export const up = (pgm: MigrationBuilder) => {
 
       user_id: {
         type: 'uuid',
-        references: USERS_TABLE,
+        references: usersTable,
         onDelete: 'CASCADE',
         notNull: false,
       },
@@ -42,9 +39,9 @@ export const up = (pgm: MigrationBuilder) => {
     }
   );
 
-  pgm.createIndex(TABLE, ['resource_type', 'resource_id']);
+  pgm.createIndex(userActivitiesTable, ['resource_type', 'resource_id']);
 };
 
 export const down = (pgm: MigrationBuilder) => {
-  pgm.dropTable(TABLE);
+  pgm.dropTable(userActivitiesTable);
 };

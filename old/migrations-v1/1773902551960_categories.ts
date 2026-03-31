@@ -1,10 +1,13 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { USERS_TABLE, CATEGORIES_TABLE as TABLE } from '../definitions/tables';
+import {
+  USERS_TABLE,
+  CATEGORIES_TABLE as TABLE,
+} from '../definitions-v1/tables';
 import {
   CATEGORY_STATUS_NAME,
   ACCOUNTING_DOMAIN_NAME,
   CATEGORY_TYPE_NAME,
-} from '../definitions/types';
+} from '../definitions-v1/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(

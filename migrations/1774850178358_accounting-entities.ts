@@ -1,13 +1,15 @@
 import { MigrationBuilder } from 'node-pg-migrate';
 import {
-  USER_LEDGER_ACCOUNTS_TABLE as TABLE,
-  USERS_TABLE,
-  LEDGER_ACCOUNTS_TABLE,
-} from '../definitions/tables';
+  accountingEntitiesTable,
+  accountingEntityType,
+} from '../config/accounting';
+import { usersTable } from '../config/users';
+import { currenciesTable } from '../config/currencies';
+import toSchemaString from '../utils/to-schema-string';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createTable(
-    TABLE,
+    accountingEntitiesTable,
     {
       id: {
         type: 'uuid',
@@ -15,24 +17,29 @@ export const up = (pgm: MigrationBuilder) => {
         default: pgm.func('uuid_generate_v4()'),
       },
 
-      user_id: {
-        type: 'uuid',
-        references: USERS_TABLE,
-        onDelete: 'CASCADE',
+      type: {
+        type: toSchemaString(accountingEntityType),
         notNull: true,
       },
 
-      ledger_account_id: {
+      owner_id: {
         type: 'uuid',
-        references: LEDGER_ACCOUNTS_TABLE,
+        references: usersTable,
+        notNull: true,
         onDelete: 'CASCADE',
+      },
+
+      functional_currency_code: {
+        type: 'varchar(3)',
+        references: currenciesTable,
+        onDelete: 'RESTRICT',
         notNull: true,
       },
 
       created_at: {
         type: 'timestamptz',
-        notNull: true,
         default: pgm.func('now()'),
+        notNull: true,
       },
 
       updated_at: {
@@ -47,15 +54,8 @@ export const up = (pgm: MigrationBuilder) => {
       ifNotExists: true,
     }
   );
-
-  pgm.createIndex(TABLE, 'user_id');
-  pgm.createIndex(TABLE, 'ledger_account_id');
-
-  pgm.addConstraint(TABLE, 'unique_user_ledger_account', {
-    unique: ['user_id', 'ledger_account_id'],
-  });
 };
 
 export const down = (pgm: MigrationBuilder) => {
-  pgm.dropTable(TABLE);
+  pgm.dropTable(accountingEntitiesTable);
 };

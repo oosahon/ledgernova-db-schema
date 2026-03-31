@@ -1,5 +1,5 @@
 import { MigrationBuilder } from 'node-pg-migrate';
-import { ACCOUNTING_DOMAIN } from '../definitions/types';
+import { ACCOUNTING_DOMAIN } from '../definitions-v1/types';
 
 export const up = (pgm: MigrationBuilder) => {
   pgm.createType(ACCOUNTING_DOMAIN, [
