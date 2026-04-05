@@ -41,6 +41,14 @@ export const up = (pgm: MigrationBuilder) => {
         default: pgm.func('now()'),
         notNull: true,
       },
+      fiscal_year_start_month: {
+        type: 'smallint',
+        notNull: true,
+      },
+      fiscal_year_start_day: {
+        type: 'smallint',
+        notNull: true,
+      },
 
       updated_at: {
         type: 'timestamptz',
